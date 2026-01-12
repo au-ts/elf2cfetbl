@@ -12,7 +12,12 @@ add_custom_target(tabletool-execute
     COMMAND $(MAKE)
         CC="${CMAKE_C_COMPILER}"
         CFLAGS="${CMAKE_C_FLAGS}"
-        AR="${CMAKE_AR}"
+
+        # The CMake rules attempt to extract objects out of static archives
+        # They are built using the toolchain-supplied ar binary, so we need
+        # to use it to do extraction as opposed to the system ar binary
+        AR="aarch64-elf-ar"
+
         TBLTOOL="$<TARGET_FILE:elf2cfetbl>"
         cfetables
     WORKING_DIRECTORY
